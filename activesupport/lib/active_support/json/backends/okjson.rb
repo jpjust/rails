@@ -327,7 +327,11 @@ module ActiveSupport
           # Invalid UTF-8 will remain invalid UTF-8.
           # In ruby >= 1.9, c is a codepoint, not a byte,
           # in which case this is still what we want.
-          a[w] = c
+          begin
+            a[w] = c
+          rescue Encoding::CompatibilityError
+            a[w] = '?'
+          end
           r += 1
           w += 1
         end
